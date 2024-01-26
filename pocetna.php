@@ -36,11 +36,13 @@ if(!$_SESSION){ echo 'Nisi ulogovan !'; } else {
                                         
                             if ($user['role'] == "artist") {
                                 echo "<li class='navItemWrapper'><a class='navItem' href='create_artwork.php'>Create Artwork</a></li>";
+                                echo "<li class='navItemWrapper'><a class='navItem' href='request_category.php'>Request a new category</a></li>";
                                 echo "<li class='navItemWrapper'><a class='navItem' href='profile.php'>Profile</a></li>";
                             } else if ($user['role'] == "admin") {
                                 echo "<li class='navItemWrapper'><a class='navItem' href='profile.php'>Profile</a></li>";
                                 echo "<li class='navItemWrapper'><a class='navItem' href='kontrolnipanel.php'>Kontrolni Panel</a></li>";
                             } else {
+                                echo "<li class='navItemWrapper'><a class='navItem' href='request_artistsaccount.php'>Request an artist account</a></li>";
                                 echo "<li class='navItemWrapper'><a class='navItem' href='profile.php'>Profile</a></li>";
                             }
                         } else {
@@ -54,7 +56,7 @@ if(!$_SESSION){ echo 'Nisi ulogovan !'; } else {
         </nav>
     </div>
     <div class="container">
-        
+
         <div class="wrapper" style="margin-top:65px; width: 64%;">
             <div class="search-filter-container">
                 <form action="pocetna.php" method="GET">
