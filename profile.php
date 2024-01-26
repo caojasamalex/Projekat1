@@ -118,6 +118,9 @@ if($_SESSION){
                 $resultQueryArtwork = $db->db->query($queryArtwork);
 
                 if($resultQueryArtwork->num_rows > 0){
+                    echo '<div class="container">';
+                    echo '<div class="wrapper" style="margin-top:65px; width: 80%;">';
+                    echo '<h2>Favorite artworks</h2>';
                     while($tempVar = $resultQueryArtwork->fetch_assoc()){
                         $artworkID = $tempVar['artwork_id'];
 
@@ -125,9 +128,6 @@ if($_SESSION){
                         $result = $db->db->query($query);
 
                         if($result->num_rows > 0){
-                            echo '<div class="container">';
-                            echo '<div class="wrapper" style="margin-top:65px; width: 80%;">';
-                            echo '<h2>Favorite artworks</h2>';
                             while($artwork = $result->fetch_assoc()){
                                 $authorID = $artwork["artist_id"];
                                 $author = $db->getUserByID($authorID);
