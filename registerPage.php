@@ -18,6 +18,7 @@
                 <input type="text" id="username" name="username" required placeholder="Username" class="inputLogRes"><br>
                 <input type="text" id="firstname" name="firstname" required placeholder="First Name" class="inputLogRes"><br>
                 <input type="text" id="lastname" name="lastname" required placeholder="Last Name" class="inputLogRes"><br>
+                <input type="email" id="email" name="email" required placeholder="Email" class="inputLogRes"><br>
                 <input type="password" id="password" name="password" required placeholder="Password" class="inputLogRes"><br>
 
                 <input type="radio" id="user" name="user_type" value="user" checked hidden>

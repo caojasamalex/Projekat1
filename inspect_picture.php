@@ -185,6 +185,75 @@ if(!$_SESSION){ echo "Nisi ulogovan !"; } else {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> <?php echo $title; ?> </title>
     <link rel="stylesheet" href="style.css">
+    <script type="text/javascript">
+        function posaljideletekoment(button) {
+            var pozicijadugme = button.parentNode;
+            var identitet = pozicijadugme.querySelector('p.identifikator');
+            var praviidentitet = identitet.textContent;
+
+            var artistID = pozicijadugme.querySelector('p.identifikatorArtistID');
+            var artist = artistID.textContent;
+            var artworkID = pozicijadugme.querySelector('p.identifikatorArtworkID');
+            var artwork = artworkID.textContent;
+
+            var form = document.createElement("form");
+            form.method = "post";
+            form.action = "deleteComment.php";
+
+            var input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "identifikacija2";
+            input.value = praviidentitet;
+
+            var input2 = document.createElement("input");
+            input2.type = "hidden";
+            input2.name = "artist";
+            input2.value = artist;
+
+            var input3 = document.createElement("input");
+            input3.type = "hidden";
+            input3.name = "artwork";
+            input3.value = artwork;
+
+            var input4 = document.createElement("input");
+            input4.type = "hidden";
+            input4.name = "location";
+            input4.value = "inspect_picture.php?id=" + artist + "-" + artwork;
+
+            form.appendChild(input);
+            form.appendChild(input2);
+            form.appendChild(input3);
+            form.appendChild(input4);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        function posaljidelete() {
+        var artistID = "<?php echo $artistID; ?>";
+        var artworkID = "<?php echo $artworkID; ?>";
+
+        var form = document.createElement("form");
+        form.method = "post";
+        form.action = "deletepicture.php";
+
+        var inputArtist = document.createElement("input");
+        inputArtist.type = "hidden";
+        inputArtist.name = "artistID";
+        inputArtist.value = artistID;
+
+        var inputArtwork = document.createElement("input");
+        inputArtwork.type = "hidden";
+        inputArtwork.name = "artworkID";
+        inputArtwork.value = artworkID;
+
+        form.appendChild(inputArtist);
+        form.appendChild(inputArtwork);
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+    </script>
 </head>
 <body class="LoginRegisterPage">
     <div class="container" style="width: 50%;">
@@ -207,10 +276,28 @@ if(!$_SESSION){ echo "Nisi ulogovan !"; } else {
                     <h3>Description</h3>
                     <h4> <?php echo $artwork['description']; ?> </h4>
                 </div>
+            </div>
+            <div class ="container">
                 <div class="wrapper" style="width: 50%; margin-top: 10px; border: 1px solid black; box-shadow: none; backdrop-filter: none; background-color: inherit;">
                     <h3>Technique: <?php echo $artwork['technique']; ?> </h4>
+                    <h3>Category: <?php
+                    
+                    $categoryNameQuery = "SELECT * FROM categories WHERE category_id = {$artwork['category_id']}";
+                    $categoryNameQueryRes = $db->db->query($categoryNameQuery);
+                    $category = $categoryNameQueryRes->fetch_assoc();
+
+
+                    echo $category['category_name'];
+                    
+                    ?> </h4>
                     <?php if($artwork['on_sale']){ ?>
                     <h3>For sale: <?php echo $artwork['cost']; ?> €</h4>
+
+                    <form method="get" action="sellersinfo.php">
+                        <input type="hidden" name="artistID" value="<?php echo $artistID; ?>">
+                        <button type="submit" class="adminPanelBttn">Seller's Info</button>
+                    </form>
+
                     <?php } ?>
                 </div>
             </div>

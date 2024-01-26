@@ -108,12 +108,13 @@ if(isset($_POST['deleteUser'])){
         }
     </script>
 </head>
-    <body class="LoginRegisterPage">
+    <body class="LoginRegisterPage" style="height:100vh;">
         <div class="container">
             <div class="wrapper" style="width: 75%; background-color: inherit; box-shadow:none;">
             <div class="container">
                 <div class="wrapper">
                     <h4>Name : <?php echo $user['firstname'] . " " . $user['lastname']; ?></h4>
+                    <h4>Email: <?php echo $user['email'];?></h4>
                     <h4>Username: <?php echo $user['username']; ?></h4>
                     <h4>User ID: <?php echo $user['user_id']; ?></h4>
                     <h4>User's Role: <?php echo $user['role']; ?></h4>
@@ -158,7 +159,7 @@ if(isset($_POST['deleteUser'])){
                                                 <p class='identifikatorArtistID' hidden><?php echo $artistID; ?></p>
                                                 <p class='identifikatorArtworkID' hidden> <?php echo $artworkID; ?></p>
                                                 <p class='identifikator' hidden> <?php echo$comment['comment_id'];?></p>
-                                                <button type='button' class='adminPanelBttn' onclick=posaljideletekoment(this)>Delete the Comment</button>
+                                                <button type='button' class='startPageBttn' onclick=posaljideletekoment(this) style="width: 100%;">Delete the Comment</button>
                                             </div>
                                         </div>
                             <?php
@@ -198,6 +199,11 @@ if(isset($_POST['deleteUser'])){
                                         </div>
                                         <?php
                                     }
+                                } else { ?>
+
+                                <h4>No artworks</h4>
+
+                            <?php
                                 }
                             ?>
                         </div>

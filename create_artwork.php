@@ -40,9 +40,10 @@ if($_SESSION){
                 $description = $db->db->real_escape_string($_POST['description']);
                 $dimensions = $db->db->real_escape_string($_POST['dimensions']);
                 $technique = $db->db->real_escape_string($_POST['technique']);
+                $selectedCategory = $_POST['category'];
                 $uploadFile = $uploadDir . $userID ."_". basename($_FILES['photo']['name']);
         
-                $insertPhoto = "INSERT INTO artworks (artist_id, title, description, image_url, creation_date, technique, cost, on_sale, dimensions) VALUES ('$userID', '$title', '$description', '$uploadFile', '$date', '$technique', '$cost', '$on_sale', '$dimensions')";
+                $insertPhoto = "INSERT INTO artworks (artist_id, title, description, image_url, creation_date, technique, cost, on_sale, dimensions, category_id) VALUES ('$userID', '$title', '$description', '$uploadFile', '$date', '$technique', '$cost', '$on_sale', '$dimensions', $selectedCategory)";
         
                 $db->db->query($insertPhoto);
         
@@ -69,6 +70,18 @@ if($_SESSION){
                     <input type="text" name="dimensions" id="dimensions" required placeholder="Dimensions" class="inputLogRes"><br>
                 
                     <input type="text" name="technique" id="technique" required placeholder="Technique" class="inputLogRes"><br>
+                    <select name="category" class="inputLogRes" style="width:100%;">
+                        <option value="">All Categories</option>
+                        <?php
+                        $queryCategory = "SELECT * FROM categories";
+                        $queryCategoryRes = $db->db->query($queryCategory);
+                        if($queryCategoryRes->num_rows > 0){
+                            while($row = $queryCategoryRes->fetch_assoc()){
+                                echo "<option value='{$row['category_id']}'>{$row['category_name']}</option>";
+                            }
+                        }
+                        ?>
+                    </select>
             
                     <input type="text" name="title" id="title" required placeholder="Title" class="inputLogRes"><br>
                     <input type="text" name="cost" id="cost" placeholder="Price" class="inputLogRes"><br>

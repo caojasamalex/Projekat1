@@ -22,9 +22,11 @@ if ($_SESSION) {
                 $queryInsertNewRequestRes = $db->db->query($queryInsertNewRequest);
 
                 if ($queryInsertNewRequestRes) {
-                    echo "Category request submitted successfully.";
+                    header("Location: pocetna.php");
                 } else {
+                    echo "<div class='containter'> <div class='wrapper'>";
                     echo "Error submitting category request.";
+                    echo "</div> </div>";
                 }
             } else {
                 echo "Request for this category already exists or this category has already been added.";
@@ -37,7 +39,7 @@ if ($_SESSION) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create an artwork</title>
+    <title>Request a category</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="LoginRegisterPage" style="height: 100vh;">
@@ -65,7 +67,7 @@ if ($_SESSION) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create an artwork</title>
+    <title>Category requests</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="LoginRegisterPage" style="height: 100vh;">

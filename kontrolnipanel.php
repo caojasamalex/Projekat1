@@ -19,7 +19,8 @@ if($_SESSION){
         <div class="wrapperAdminPanel">
             <div class="navbar">
                 <button type ="button" class ="adminPanelBttn" onclick="location.href = 'pocetna.php';" style="width: 88%;">Main Page</button>
-                <button type ="button" class ="adminPanelBttn" onclick="location.href = 'request_category.php';" style="width: 88%;">Review new category requests</button>
+                <button type ="button" class ="adminPanelBttn" onclick="location.href = 'request_category.php';" style="width: 88%;">Category requests</button>
+                <button type ="button" class ="adminPanelBttn" onclick="location.href = 'request_artistsaccount.php';" style="width: 88%;">Artists requests</button>
                 <button type ="button" class ="adminPanelBttn" onclick="location.href = 'kreirajumetnika.php';" style="width: 88%;">Create an Artist</button>
                 <button type ="button" class ="adminPanelBttn" onclick="location.href = 'kreirajadmina.php';" style="width: 88%;">Create an Admin</button>
             </div>
