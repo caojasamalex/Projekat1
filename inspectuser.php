@@ -127,7 +127,7 @@ if(isset($_POST['deleteUser'])){
                 </div>
             </div>
             <div class="container">
-                <div class="wrapper" style="margin-top: 20px;">
+                <div class="wrapper" style="margin-top: 20px; width: 100%;">
                     <?php 
                         if($commentsExist === 0) echo "<h4>This user hasn't posted any comments yet.</h4>";
                         else { 
@@ -174,7 +174,7 @@ if(isset($_POST['deleteUser'])){
             <?php
                 if($user['role'] === 'artist'){ ?>
                     <div class="container">
-                        <div class="wrapper" style="margin-top: 20px;">
+                        <div class="wrapper" style="margin-top: 20px; width: 100%;">
                             <?php
                                 $queryArtworks = "SELECT * FROM artworks WHERE artist_id = {$user['user_id']}";
                                 $getArtowrks = $db->db->query($queryArtworks);
