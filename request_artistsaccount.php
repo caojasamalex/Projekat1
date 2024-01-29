@@ -128,13 +128,13 @@ if($_SESSION){
                 if (isset($_POST['deleteTheRequest'])) {
                     $requestID = $db->db->real_escape_string($_POST['requestID']);
                     
-                    $queryCategoryReq = "SELECT * FROM categoryrequests WHERE request_id = $requestID";
+                    $queryCategoryReq = "SELECT * FROM userrequests WHERE request_id = $requestID";
                     $queryCategoryReqRes = $db->db->query($queryCategoryReq);
         
                     if($queryCategoryReqRes->num_rows){
                         $row = $queryCategoryReqRes->fetch_assoc();
 
-                        $queryDeleteRequest = "DELETE FROM categoryrequests WHERE request_id = {$row['request_id']}";
+                        $queryDeleteRequest = "DELETE FROM userrequests WHERE request_id = {$row['request_id']}";
                         $queryDeleteRequestRes = $db->db->query($queryDeleteRequest);
         
                         header("Location: request_category.php");
