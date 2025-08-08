@@ -2,7 +2,7 @@
 session_start();
 
 if ($_SESSION) {
-    if ($_SESSION['user_type'] === 'admin') {
+    if ($_SESSION['user_type'] === 'admin' || $_SESSION['user_id'] === $_POST['oglasavac']) {
         require_once "database.php";
         $db = new DB;
 

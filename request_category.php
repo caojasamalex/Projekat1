@@ -5,33 +5,32 @@ require_once "database.php";
 $db = new DB;
 
 if ($_SESSION) {
-    if ($_SESSION['user_type'] === "artist") {
-        if (isset($_POST['submitCategoryRequest'])) {
-            $userID = $_SESSION['user_id'];
-            $categoryName = $db->db->real_escape_string($_POST['categoryName']);
-            $description = $db->db->real_escape_string($_POST['description']);
+    if (isset($_POST['submitCategoryRequest'])) {
+        $userID = $_SESSION['user_id'];
+        $categoryName = $db->db->real_escape_string($_POST['categoryName']);
+        $description = $db->db->real_escape_string($_POST['description']);
 
-            $queryIfRequested = "SELECT * FROM categoryrequests WHERE requested_category_name = '$categoryName'";
-            $queryIfRequestedRes = $db->db->query($queryIfRequested);
+        $queryIfRequested = "SELECT * FROM categoryrequests WHERE requested_category_name = '$categoryName'";
+        $queryIfRequestedRes = $db->db->query($queryIfRequested);
 
-            $queryIfExists = "SELECT * FROM categories WHERE category_name = '$categoryName'";
-            $queryIfExistsRes = $db->db->query($queryIfExists);
+        $queryIfExists = "SELECT * FROM categories WHERE category_name = '$categoryName'";
+        $queryIfExistsRes = $db->db->query($queryIfExists);
 
-            if (!$queryIfRequestedRes->num_rows && !$queryIfExistsRes->num_rows) {
-                $queryInsertNewRequest = "INSERT INTO categoryrequests (requested_category_name, category_desc) VALUES ('$categoryName', '$description')";
-                $queryInsertNewRequestRes = $db->db->query($queryInsertNewRequest);
+        if (!$queryIfRequestedRes->num_rows && !$queryIfExistsRes->num_rows) {
+            $queryInsertNewRequest = "INSERT INTO categoryrequests (requested_category_name, category_desc, user_id) VALUES ('$categoryName', '$description', '$userID')";
+            $queryInsertNewRequestRes = $db->db->query($queryInsertNewRequest);
 
-                if ($queryInsertNewRequestRes) {
-                    header("Location: pocetna.php");
-                } else {
-                    echo "<div class='containter'> <div class='wrapper'>";
-                    echo "Error submitting category request.";
-                    echo "</div> </div>";
-                }
+            if ($queryInsertNewRequestRes) {
+                header("Location: pocetna.php");
             } else {
-                echo "Request for this category already exists or this category has already been added.";
+                echo "<div class='containter'> <div class='wrapper'>";
+                echo "Error submitting category request.";
+                echo "</div> </div>";
             }
+        } else {
+            echo "Zahtev za kreiranje ove kategorije već postoji ili kategorija već postoji.";
         }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -59,7 +58,7 @@ if ($_SESSION) {
 </html>
 
 <?php
-    } else if ($_SESSION['user_type'] === "admin") { 
+    if ($_SESSION['user_type'] === "admin") { 
 ?>
 
 <!DOCTYPE html>
@@ -139,8 +138,6 @@ if ($_SESSION) {
 </html>
 
 <?php    
-    } else {
-        echo 'Za malo -> Nisi umetnik a ni admin !';
     }
 } else {
     echo 'Za malo -> Nisi ni ulogovan !';
