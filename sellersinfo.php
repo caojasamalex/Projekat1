@@ -10,21 +10,25 @@ if(!$_SESSION){
     exit();
 }
 
-if(isset($_GET['oglasavacID'])){
-    if($_SESSION['user_id'] != $_GET['oglasavacID']){
-        $userIDQuery = "SELECT * FROM users WHERE user_id = {$_GET['oglasavacID']}";
+if(isset($_GET['artistID'])){
+    if($_SESSION['user_id'] != $_GET['artistID']){
+        $userIDQuery = "SELECT * FROM users WHERE user_id = {$_GET['artistID']}";
         $userIDQueryRes = $db->db->query($userIDQuery);
 
         if($userIDQueryRes->num_rows){
             $user = $userIDQueryRes->fetch_assoc();
-?> 
+
+            if($user['role'] != 'artist'){
+                echo "Korisnik nije umetnik";
+                exit();
+            } ?> 
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Korisnik <?php echo $user['user_id']; ?> - Kontakt Info</title>
+    <title>Artist <?php echo $user['user_id']; ?> - Contact Info</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="LoginRegisterPage" style="height: 100vh;">

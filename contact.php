@@ -16,26 +16,17 @@ if(!$_SESSION){ echo 'Nisi ulogovan !'; } else {
         <div class="wrapper">
         <table class="tekstStart">
             <tr>
-                <td>Razvojni tim:</td>
+                <td>E-mail:</td>
             </tr>
             <tr>
-                <td>Mihajlo Spasić</td>
+                <td>adjokic24@gmail.com</td>
             </tr>
             <tr>
-                <td>Aleksandar Đokić</td>
-            </tr>
-            <tr>
-                <td>Arsenije Jokić</td>
-            </tr>
-            <tr>
-                <td>Janko Jakovljević</td>
-            </tr>
-            <tr>
-                <td>Ognjen Obradović</td>
+                <td>arsa03radnicki@gmail.com</td>
             </tr>
             <tr></tr>
             <tr>
-                <td>Telefon:</td>
+                <td>Phone:</td>
             </tr>
             <tr>
                 <td>XXXXXXXXXXXX</td>

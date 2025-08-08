@@ -3,7 +3,7 @@
 }
 
 body{
-    background-image: url(pozadina.jpg);
+    background-image: url(Galerija.png);
     background-size: cover;
     background-attachment: fixed;
 
@@ -17,7 +17,7 @@ body{
     place-items: center;
     margin: 0;
     
-    background-image: url(pozadina.jpg);
+    background-image: url(Galerija.png);
     background-size: 100%;
     background-repeat: repeat;
 }

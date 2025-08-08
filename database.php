@@ -6,11 +6,7 @@ class DB{
     public $db;
 
     function __construct(){
-        $this->db = new mysqli("localhost", "root", "root", "projekatrtsi");
-
-        if ($this->db->connect_errno) {
-            die("Failed to connect to MySQL: (" . $this->db->connect_errno . ") " . $this->db->connect_error);
-        }   
+        $this->db = new mysqli("localhost", "root", "root", "PIAproject");
     }
 
     function __desctruct(){
@@ -38,7 +34,11 @@ class DB{
         $row = $result->fetch_assoc();
 
         $this->deleteCommentByUserID($user_id);
-        $this->deleteOglasByUserID($user_id);
+
+        if($row['role'] == 'artist'){
+            $this->deleteArtworkByArtistID($user_id);
+        }
+
         $this->deleteUserLikesByUserID($user_id);
 
         $query = "DELETE FROM users WHERE user_id = '$user_id'";
@@ -51,16 +51,24 @@ class DB{
     
         if ($result->num_rows) {
             while ($row = $result->fetch_assoc()) {
-                $oglas_id = $row['oglas_id'];
+                $artwork_id = $row['artwork_id'];
     
-                $query2 = "DELETE FROM user_likes WHERE user_id = $user_id AND oglas_id = $oglas_id";
+                $query2 = "DELETE FROM user_likes WHERE user_id = $user_id AND artwork_id = $artwork_id";
                 $this->db->query($query2);
     
                 if ($row['liked'] === '1') {
-                    $queryUpdateLikes = "UPDATE oglasi SET likes = likes - 1 WHERE oglas_id = $oglas_id";
+                    $queryUpdateLikes = "UPDATE artworks SET likes = likes - 1 WHERE artwork_id = $artwork_id";
                     $queryUpdateLikesRes = $this->db->query($queryUpdateLikes);
                     if (!$queryUpdateLikesRes) {
                         echo "Error updating likes: " . $this->db->error;
+                    }
+                }
+    
+                if ($row['favorite'] === '1') {
+                    $queryUpdateFavorites = "UPDATE artworks SET favorites = favorites - 1 WHERE artwork_id = $artwork_id";
+                    $queryUpdateFavoritesRes = $this->db->query($queryUpdateFavorites);
+                    if (!$queryUpdateFavoritesRes) {
+                        echo "Error updating favorites: " . $this->db->error;
                     }
                 }
             }
@@ -68,18 +76,18 @@ class DB{
     }
     
 
-    function deleteOglasByUserID($user_id){
-        $query = "SELECT * FROM oglasi WHERE user_id = '$user_id'";
+    function deleteArtworkByArtistID($artist_id){
+        $query = "SELECT * FROM artworks WHERE artist_id = '$artist_id'";
         $result = $this->db->query($query);
 
         while($row = $result->fetch_assoc()){
-            $oglas_id = $row['oglas_id'];
+            $artwork_id = $row['artwork_id'];
 
-            $this->deleteCommentByOglasID($oglas_id);
-            $query2 = "DELETE FROM oglasi WHERE oglas_id = '$oglas_id'";
+            $this->deleteCommentByArtworkID($artwork_id);
+            $query2 = "DELETE FROM artworks WHERE artwork_id = '$artwork_id'";
             $this->db->query($query2);
             
-            $query3 = "DELETE FROM user_likes WHERE oglas_id = '$oglas_id'";
+            $query3 = "DELETE FROM user_likes WHERE artwork_id = '$artwork_id'";
             $this->db->query($query3);
         }
     }
@@ -89,8 +97,8 @@ class DB{
         $this->db->query($query);
     }
 
-    function deleteCommentByOglasID($oglas_id){
-        $query = "DELETE FROM comments WHERE oglas_id = '$oglas_id'";
+    function deleteCommentByArtworkID($artwork_id){
+        $query = "DELETE FROM comments WHERE artwork_id = '$artwork_id'";
         $this->db->query($query);
     }
 
@@ -99,15 +107,11 @@ class DB{
         $this->db->query($query);
     }
     
-    function deleteOglasByOglasID($oglas_id){
-        $this->deleteCommentByOglasID($oglas_id);
+    function deleteArtworkByArtworkID($artwork_id){
+        $this->deleteCommentByArtworkID($artwork_id);
 
-        $query1 = "DELETE FROM user_likes WHERE oglas_id = '$oglas_id'";
-        $this->db->query($query1);
-        
-
-        $query2 = "DELETE FROM oglasi WHERE oglas_id = '$oglas_id'";
-        $this->db->query($query2);
+        $query = "DELETE FROM artworks WHERE artwork_id = '$artwork_id'";
+        $this->db->query($query);
     }
 }
 ?>
