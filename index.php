@@ -10,14 +10,14 @@
     <div class="container">
         <div class="wrapper" style="padding-bottom: 20px;">
             <div>
-                <h1 class="wrapperHead1">Welcome to the World of Art</h1>
-                <p class="tekstStart">Explore online exhibitions related to the most famous art pieces<br> and dive into the story that hides behind them.<br> 
-                    If you are lucky enough, you will be able to make purchases<br> and eventually end up with owning some of those pieces.
+                <h1 class="wrapperHead1">ProdajemKupujem</h1>
+                <p class="tekstStart">
+                    Dobrodošli na najveći marketplace novih i polovnih stvari u Srbiji
                 </p>
-                <button type ="button" class ="startPageBttn" onclick="location.href = 'loginPage.php';">Login</button>
-                <button type ="button" class ="startPageBttn" onclick="location.href = 'registerPage.php';">Register</button>
+                <button type ="button" class ="startPageBttn" onclick="location.href = 'loginPage.php';">Ulogujte se</button>
+                <button type ="button" class ="startPageBttn" onclick="location.href = 'registerPage.php';">Registrujte se</button>
             </div>
-            <button type ="button" class ="startPageBttn" onclick="location.href = 'guest.php';" style="width: 88%;">Enter as a guest</button>
+            <button type ="button" class ="startPageBttn" onclick="location.href = 'guest.php';" style="width: 88%;">Pristupite kao gost</button>
         </div>
     </div>
 </body>

@@ -4,7 +4,8 @@ require_once "database.php";
 
 $db = new DB;
 
-if(!$_SESSION){ echo 'Nisi ulogovan !'; } else {
+if(!$_SESSION){ echo 'Nisi ulogovan !'; 
+                header("Location: guest.php"); } else {
 ?>
 
 <!DOCTYPE html>
@@ -12,16 +13,16 @@ if(!$_SESSION){ echo 'Nisi ulogovan !'; } else {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The World of Art</title>
+    <title>ProdajemKupujem</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class = "LoginRegisterPage">
     <div class="navbarWrapper">
         <nav class="navbar">
             <div class="navbarStatic">
-                <a class="navItem" href="pocetna.php">Home</a>
-                <a class="navItem" href="about.php">About</a>
-                <a class="navItem" href="contact.php">Contact</a>
+                <a class="navItem" href="pocetna.php">Početna</a>
+                <a class="navItem" href="about.php">O nama</a>
+                <a class="navItem" href="contact.php">Kontaktirajte nas</a>
             </div>
 
             <div class="navbarElem">
@@ -34,36 +35,33 @@ if(!$_SESSION){ echo 'Nisi ulogovan !'; } else {
                             $userID = $user['user_id'];
                             echo "<li class='navItemWrapper'> Hello, " . $_SESSION['firstname'] . "</a></li>";
                                         
-                            if ($user['role'] == "artist") {
-                                echo "<li class='navItemWrapper'><a class='navItem' href='create_artwork.php'>Create Artwork</a></li>";
-                                echo "<li class='navItemWrapper'><a class='navItem' href='request_category.php'>Request a new category</a></li>";
-                                echo "<li class='navItemWrapper'><a class='navItem' href='profile.php'>Profile</a></li>";
+                            if ($user['role'] == "user") {
+                                echo "<li class='navItemWrapper'><a class='navItem' href='create_oglas.php'>Kreiraj oglas</a></li>";
+                                echo "<li class='navItemWrapper'><a class='navItem' href='request_category.php'>Zatraži novu kategoriju</a></li>";
+                                echo "<li class='navItemWrapper'><a class='navItem' href='profile.php'>Profil</a></li>";
                             } else if ($user['role'] == "admin") {
-                                echo "<li class='navItemWrapper'><a class='navItem' href='profile.php'>Profile</a></li>";
+                                echo "<li class='navItemWrapper'><a class='navItem' href='profile.php'>Profil</a></li>";
                                 echo "<li class='navItemWrapper'><a class='navItem' href='kontrolnipanel.php'>Kontrolni Panel</a></li>";
-                            } else {
-                                echo "<li class='navItemWrapper'><a class='navItem' href='request_artistsaccount.php'>Request an artist account</a></li>";
-                                echo "<li class='navItemWrapper'><a class='navItem' href='profile.php'>Profile</a></li>";
                             }
                         } else {
                             echo "Error fetching user's ID.";
                         }
                     }
                     ?>
-                    <li class="navItemWrapper"><a class="navItem" href="logout.php?logout">Logout</a></li>
+                    <li class="navItemWrapper"><a class="navItem" href="logout.php?logout">Izlogujte se</a></li>
                 </ul>
             </div>
         </nav>
     </div>
-    <div class="container">
+    <div class="container" style="width:75%">
 
-        <div class="wrapper" style="margin-top:65px; width: 64%;">
+        <div class="wrapper" style="margin-top:65px; width: 93%;">
             <div class="search-filter-container">
                 <form action="pocetna.php" method="GET">
-                    <input type="text" name="search" class ="inputLogRes" style="width:65%;" placeholder="Search by artist or artwork name">
+                    <input type="text" name="search" class ="inputLogRes" style="width:65%; margin-right:10px" placeholder="Pretraži oglase po nazivu ili po oglašivaču">
                     
-                    <select name="category" class="inputLogRes" style="width:20%;">
-                        <option value="">All Categories</option>
+                    <select name="category" class="inputLogRes" style="width:15%;">
+                        <option value="">Sve kategorije</option>
                         <?php
                         $queryCategory = "SELECT * FROM categories";
                         $queryCategoryRes = $db->db->query($queryCategory);
@@ -75,19 +73,15 @@ if(!$_SESSION){ echo 'Nisi ulogovan !'; } else {
                         ?>
                     </select>
                     
-                    <button type="submit" class ="startPageBttn" style="width:15%; padding: 10px 10px;">Search</button>
+                    <button type="submit" class ="startPageBttn" style="width:15%; padding: 10px 10px;">Pretraži</button>
                 </form>
             </div>
         </div>
 
 
         <?php
-            $query = "SELECT * FROM artworks";
+            $query = "SELECT * FROM oglasi";
             $whereExists = 0;
-            if ($_SESSION["user_type"] == 'artist') {
-                $query .= " WHERE artist_id != {$_SESSION['user_id']}";
-                $whereExists = 1;
-            }
             
             if (isset($_GET['search']) && !empty($_GET['search'])) {
                 $searchTerm = $db->db->real_escape_string($_GET['search']);
@@ -98,7 +92,7 @@ if(!$_SESSION){ echo 'Nisi ulogovan !'; } else {
                     $whereExists = 1;
                 }
 
-                $query .= "(title LIKE '%$searchTerm%' OR artist_id IN (SELECT user_id FROM users WHERE CONCAT(firstname, ' ', lastname) LIKE '%$searchTerm%'))";
+                $query .= "(title LIKE '%$searchTerm%' OR user_id IN (SELECT user_id FROM users WHERE CONCAT(firstname, ' ', lastname) LIKE '%$searchTerm%'))";
             }
             
             if (isset($_GET['category']) && !empty($_GET['category'])) {
@@ -114,39 +108,39 @@ if(!$_SESSION){ echo 'Nisi ulogovan !'; } else {
                 $query .= "category_id = $category";
             }
             
-            $resultArtworkQuery = $db->db->query($query);
-            if($resultArtworkQuery->num_rows > 0){
+            $resultOglasQuery = $db->db->query($query);
+            if($resultOglasQuery->num_rows > 0){
                 echo '<div class="container" style="width: 80%;">';
                 echo '<div class="wrapper" style="margin-top: 10px; width: 80%;">';
-                while($artwork = $resultArtworkQuery->fetch_assoc()){
-                    $title = $artwork["title"];
-                    $authorID = $artwork["artist_id"];
+                while($oglas = $resultOglasQuery->fetch_assoc()){
+                    $title = $oglas["title"];
+                    $authorID = $oglas["user_id"];
                     $author = $db->getUserByID($authorID);
                     $authorName = $author["firstname"]. " " .$author["lastname"];
-                    $imageURL = $artwork["image_url"];
-                    $redirekcija = "inspect_picture.php?id=".$authorID."-".$artwork['artwork_id'];
+                    $imageURL = $oglas["image_url"];
+                    $redirekcija = "inspect_oglas.php?id=".$authorID."-".$oglas['oglas_id'];
                     ?>
                     <div class="container" style="margin: 15px;">
                         <div class="wrapper" style="background-color: rgba(165, 191, 221, 0.1); box-shadow: 0 0px 20px 0 rgba(0,0,0,0.10), 0 0px 20px 0 rgba(0,0,0,0.10);">
-                            <h2>Title: <?php echo $title; ?></h2>
+                            <h2>Naslov: <?php echo $title; ?></h2>
                             <img src="<?php echo $imageURL ?>" alt="<?php echo $imageURL ?>" class="imageCard" style="max-width: 95%; max-height: 95%;">
-                            <h3>Author's Name: <?php echo $authorName; ?></h3>
+                            <h3>Oglašavač: <?php echo $authorName; ?></h3>
                             <?php 
                             if($_SESSION["user_type"] == 'admin'){
-                                $redirekcijaAdmin = "inspect_picture.php?id=".$authorID."-".$artwork['artwork_id'];
+                                $redirekcijaAdmin = "inspect_oglas.php?id=".$authorID."-".$oglas['oglas_id'];
                                 ?>
-                                <button type="button" onclick="location.href = '<?php echo $redirekcijaAdmin; ?>';" class="loginRegisterRedirectButton" style="width:100%;">Admin actions</button>
+                                <button type="button" onclick="location.href = '<?php echo $redirekcijaAdmin; ?>';" class="loginRegisterRedirectButton" style="width:100%;">Admin akcije</button>
                                 <?php
                             } else {
                             ?>
-                            <button type="button" onclick="location.href = '<?php echo $redirekcija; ?>';" class="loginRegisterRedirectButton" style="width:100%;">Details</button>
+                            <button type="button" onclick="location.href = '<?php echo $redirekcija; ?>';" class="loginRegisterRedirectButton" style="width:100%;">Detaljnije</button>
                     <?php
                     }
                     echo "</div>
                     </div>";
                 }
             } else {
-                echo '<div class="wrapper" style="margin-top: 70px; box-shadow: 0 0px 20px 0 rgba(0,0,0,0.30), 0 0px 20px 0 rgba(0,0,0,0.30);"> <h1> No artworks to be shown. </h1> </div>';
+                echo '<div class="wrapper" style="margin-top: 70px; box-shadow: 0 0px 20px 0 rgba(0,0,0,0.30), 0 0px 20px 0 rgba(0,0,0,0.30);"> <h1> Nema kreiranih oglasa. </h1> </div>';
             }
         ?>
         </div>
