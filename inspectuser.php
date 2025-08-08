@@ -125,7 +125,7 @@ if(isset($_POST['deleteUser'])){
                 </div>
             </div>
             <div class="container">
-                <div class="wrapper" style="margin-top: 20px; width: 100%;">
+                <div class="wrapper" style="margin-top: 20px;">
                     <?php 
                         if($commentsExist === 0) echo "<h4>This user hasn't posted any comments yet.</h4>";
                         else { 
@@ -172,7 +172,7 @@ if(isset($_POST['deleteUser'])){
             <?php
                 if($user['role'] === 'user'){ ?>
                     <div class="container">
-                        <div class="wrapper" style="margin-top: 20px; width: 100%;">
+                        <div class="wrapper" style="margin-top: 20px;">
                             <?php
                                 $queryOglasi = "SELECT * FROM oglasi WHERE user_id = {$user['user_id']}";
                                 $getOglasi = $db->db->query($queryOglasi);
